@@ -1,16 +1,16 @@
-def read_or_write_token():
-    f = open("token.txt", "r")
-    token = f.read()
-    f.close()
-
-    if(token == ""):
-        with open("token.txt", "w") as f:
-            token = input("Token not found. Please paste it now: ")
-            f.write(token)
-            f.close()
-            return token
-    else:
-        return token
+import get_token
+import discord
 
 
-read_or_write_token()
+class Bot(discord.Client):
+    async def on_ready(self):
+        print(f'Logged on as {self.user}!')
+
+    async def on_message(self, message):
+        print(f'Message from {message.author}: {message.content}')
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+client = Bot(intents=intents)
+client.run(get_token.read_or_write_token())
